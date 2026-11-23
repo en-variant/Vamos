@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: tokentax-lab
+Version: 0.1.0
+Summary: Measurement-first audit and optimization toolkit for the Indian-language token tax
+Requires-Python: >=3.10
+Requires-Dist: numpy>=1.24
+Requires-Dist: pandas>=2.0
+Requires-Dist: plotly>=5.18
+Requires-Dist: streamlit>=1.32
+Requires-Dist: tiktoken>=0.7
+Requires-Dist: transformers<5,>=4.44
+Requires-Dist: datasets>=2.18
+Requires-Dist: tokenizers>=0.19
+Requires-Dist: sentencepiece>=0.2
+Requires-Dist: sacrebleu>=2.4
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: regex>=2024.4
+Requires-Dist: scikit-learn>=1.4
+Requires-Dist: joblib>=1.4
+Requires-Dist: google-genai>=1.0
+Requires-Dist: openai>=1.40
+Requires-Dist: python-dotenv>=1.0
+Requires-Dist: requests>=2.31
+Requires-Dist: indic-transliteration>=2.3
+Provides-Extra: eval
+Requires-Dist: evaluate>=0.4; extra == "eval"
+Requires-Dist: accelerate>=0.30; extra == "eval"
+Provides-Extra: model
+Requires-Dist: torch>=2.2; extra == "model"
+Provides-Extra: lora
+Requires-Dist: torch>=2.2; extra == "lora"
+Requires-Dist: peft>=0.11; extra == "lora"

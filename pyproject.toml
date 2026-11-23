@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tokentax-lab"
+version = "0.1.0"
+description = "Measurement-first audit and optimization toolkit for the Indian-language token tax"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "plotly>=5.18",
+  "streamlit>=1.32",
+  "tiktoken>=0.7",
+  "transformers>=4.44,<5",
+  "datasets>=2.18",
+  "tokenizers>=0.19",
+  "sentencepiece>=0.2",
+  "sacrebleu>=2.4",
+  "pyyaml>=6.0",
+  "regex>=2024.4",
+  "scikit-learn>=1.4",
+  "joblib>=1.4",
+  "google-genai>=1.0",
+  "openai>=1.40",
+  "python-dotenv>=1.0",
+  "requests>=2.31",
+  "indic-transliteration>=2.3",
+]
+
+[project.optional-dependencies]
+eval = ["evaluate>=0.4", "accelerate>=0.30"]
+model = ["torch>=2.2"]
+lora = ["torch>=2.2", "peft>=0.11"]
+
+[project.scripts]
+tokentax = "tokentax_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

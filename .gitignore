@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.streamlit/secrets.toml
+results/*.csv
+results/*.json
+model_outputs/
+data/flores/*.devtest
+data/flores/*.txt
+data/belebele/*.jsonl
+data/heldout/**/*.txt
+data/heldout/provenance.json
+results/packs/
+results/extended-tokenizer/
+results/adapted-*/

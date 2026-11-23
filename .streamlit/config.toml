@@ -1,0 +1,22 @@
+[theme]
+base = "dark"
+primaryColor = "#8bc34a"
+backgroundColor = "#111813"
+secondaryBackgroundColor = "#1c2a20"
+textColor = "#e7eadf"
+linkColor = "#a8d86e"
+borderColor = "#3d5440"
+baseRadius = "none"
+buttonRadius = "none"
+showWidgetBorder = true
+font = "VT323:https://fonts.googleapis.com/css2?family=VT323&display=swap"
+headingFont = "'Press Start 2P':https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+codeFont = "VT323:https://fonts.googleapis.com/css2?family=VT323&display=swap"
+codeFontSize = "1.1rem"
+headingFontSizes = ["24px", "18px", "15px", "14px", "13px", "12px"]
+headingFontWeights = [400, 400, 400, 400, 400, 400]
+chartCategoricalColors = ["#8bc34a", "#d4a84f", "#67b7a3", "#d17b5b", "#9d8bd2", "#d9d8ca"]
+
+[theme.sidebar]
+backgroundColor = "#17221a"
+secondaryBackgroundColor = "#202d22"

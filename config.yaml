@@ -1,0 +1,35 @@
+languages:
+  kn:
+    name: Kannada
+    script: Knda
+  hi:
+    name: Hindi
+    script: Deva
+  ta:
+    name: Tamil
+    script: Taml
+  en:
+    name: English
+    script: Latn
+
+cost:
+  model: "gemini-4-argon"
+  tier: "paid_standard"
+  usd_per_million_input_tokens: 2.0
+  price_source: "https://ai.google.dev/gemini-api/docs/pricing"
+  price_valid_through: "2026-11-30"
+  price_recorded_date: "2026-11-21"
+  usd_to_inr: 92.68
+  fx_source: "https://api.frankfurter.dev/v1/latest?from=USD&to=INR"
+  fx_date: "2026-11-20"
+
+models:
+  local: "Qwen/Qwen2.5-0.5B"
+  pivot: "facebook/nllb-200-distilled-600M"
+  tokenizer_audit:
+    Qwen2.5: "Qwen/Qwen2.5-0.5B"
+    Llama3: "meta-llama/Meta-Llama-3-8B"
+    Gemma: "google/gemma-2-2b"
+    Sarvam-1: "sarvamai/sarvam-1"
+
+context_tokens: 8192

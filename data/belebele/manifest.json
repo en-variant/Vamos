@@ -1,0 +1,19 @@
+{
+  "dataset": "facebook/belebele",
+  "revision": "7899cdfa4e1e0d733fd77c848e2c273cb1d32be2",
+  "split": "test",
+  "language_configs": {
+    "kn": "kan_Knda",
+    "hi": "hin_Deva",
+    "ta": "tam_Taml",
+    "en": "eng_Latn"
+  },
+  "questions_per_language": {
+    "kn": 900,
+    "hi": 900,
+    "ta": 900,
+    "en": 900
+  },
+  "downloaded_at_utc": "2026-11-21T04:27:16.351766+00:00",
+  "source_card": "https://huggingface.co/datasets/facebook/belebele"
+}

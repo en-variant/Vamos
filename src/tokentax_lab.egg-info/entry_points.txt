@@ -1,0 +1,2 @@
+[console_scripts]
+tokentax = tokentax_lab.cli:main
