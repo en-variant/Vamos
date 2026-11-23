@@ -21,9 +21,12 @@ memory/storage for the selected model.
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
-cp .env.example .env
 streamlit run app.py
 ```
+
+The repository does not include an `.env.example`; create `.env` only when a
+workflow needs credentials or provider pricing values. `python-dotenv` loads it
+automatically. You can also export variables in your shell.
 
 The `.env` file is optional for the receipt, public Belebele download, and
 core UI. Never paste credentials into source code or commit `.env` or
@@ -80,7 +83,52 @@ The tokenizer recommendation is only a token-count comparison. A hosted
 service's tokenizer is fixed to its model, so choosing a different tokenizer in
 this UI does not change that service's tokenization, quality, or bill.
 
+## Project layout
+
+- `app.py`: Streamlit workbench for receipts, local translation, audits,
+  evaluation reports, adaptation metrics, failure examples, and guidance.
+- `src/tokentax_lab/`: package code for tokenizers, safety checks, evaluation,
+  data loading, optimization strategies, and report generation.
+- `scripts/`: held-out text download, translation evaluation, language-pack
+  training, and embedding-row adaptation workflows.
+- `config.yaml`: supported languages, model identifiers, reference input
+  price, and recorded USD/INR conversion used for estimates.
+- `data/`: dataset manifests and local dataset locations; downloaded data and
+  experiment outputs are intentionally kept out of Git.
+- `results/`: generated reports, tokenizer packs, models, and metrics.
+- `tests/`: unit and workflow tests.
+
+This is an experimental measurement toolkit, not a provider billing counter.
+It compares tokenization and measured task quality; it cannot change a hosted
+model's tokenizer or actual bill.
+
 ## Reproducible workflow
+
+Run commands from the repository root. Install the package in editable mode so
+the `tokentax` command and `tokentax_lab` imports resolve.
+
+### CLI overview
+
+```bash
+tokentax --help
+tokentax audit --help
+tokentax evaluate --help
+```
+
+| Command | Purpose |
+| --- | --- |
+| `tokentax status` | Show dataset access state, configured credentials, and pricing metadata. |
+| `tokentax receipt --text "…"` | Return tokenizer counts and counterfactual cost estimates. |
+| `tokentax download --belebele` | Download and validate public Belebele files. |
+| `tokentax download --flores` | Download gated FLORES after access is granted and `HF_TOKEN` is configured. |
+| `tokentax audit` | Audit local FLORES text across available tokenizer assets. |
+| `tokentax evaluate` | Run Belebele evaluation with a local or explicitly enabled API backend. |
+| `tokentax failure-lab` | Print examples of rewrite failure risks. |
+
+Audit writes CSV and JSON (default base path `results/audit`). Evaluation
+writes `results/evaluation_<language>.json` and, when trained, a router model
+at `results/router_<language>.joblib`. Inspect report status before citing
+results; a report may record blocked or incomplete work.
 
 ### 1. Download public evaluation data
 
@@ -185,14 +233,20 @@ the `lora` extra before using it:
 python -m pip install -e '.[lora]'
 ```
 
+Use `python scripts/<name>.py --help` for each script's options.
+`scripts/evaluate_translation.py` runs local NLLB-200 translation over FLORES
+and saves a chrF report under `results/translation/` by default.
+
 ### 5. Check readiness and launch the app
 
 ```bash
 tokentax status
 tokentax receipt --text "ನನ್ನ ಬ್ಯಾಂಕ್ ಖಾತೆಯಲ್ಲಿ ₹1,25,000.50 ಇದೆ."
 tokentax failure-lab
-pytest -q
 ```
+
+Run the automated suite with `pytest -q` from the repository root. The Makefile
+also provides `make install`, `make app`, `make audit`, and `make test` shortcuts.
 
 The Streamlit workbench contains a tokenizer receipt and heatmap, audit,
 evaluation frontier, improvement ledger, and failure lab. Results appear only
@@ -215,3 +269,38 @@ produce reports.
 Downloaded datasets and generated experiment artifacts are local-only and
 ignored by Git. Respect the FLORES evaluation-only terms and the source
 licenses and attribution requirements of Wikimedia-derived training text.
+
+## Configuration and credentials
+
+`config.yaml` controls language labels, model defaults, and reference pricing
+for counterfactual estimates. Review recorded price and FX dates before
+interpreting cost figures. Estimates are not provider quotes or actual charges.
+
+| Variable | Used for |
+| --- | --- |
+| `HF_TOKEN` | Gated FLORES access and authenticated Hugging Face downloads. |
+| `GOOGLE_API_KEY` | Optional Gemini evaluation. |
+| `OPENAI_API_KEY` | Optional OpenAI-compatible evaluation; `OPENAPI_API_KEY` is an alias. |
+| `OPENAI_BASE_URL` | OpenAI-compatible endpoint; `OPENAPI_BASE_URL` is an alias. |
+| `OPENAI_MODEL` | Provider-enabled model identifier. |
+| `OPENAI_USD_INPUT_PER_MILLION`, `OPENAI_USD_OUTPUT_PER_MILLION` | Current API rate-card values. |
+| `OPENAI_USD_TO_INR` | USD/INR conversion for API cost reporting. |
+| `OPENAI_TOKENIZER` | Optional local `tiktoken` encoding for budget preflight estimates. |
+
+Keep `.env` and `.streamlit/secrets.toml` private. Paid evaluation requires
+`--allow-paid`; the CLI applies a budget cap (₹50 by default) and stops when
+the cap is reached. Model downloads can be large even without API calls.
+
+## Troubleshooting
+
+- **`tokentax: command not found`**: activate the virtual environment and
+  install with `python -m pip install -e .`.
+- **FLORES access error**: accept its Hugging Face terms, set `HF_TOKEN`, and
+  rerun the download.
+- **Tokenizer marked skipped**: model files may be gated, unavailable offline,
+  or unsupported. The audit records the reason and continues when possible.
+- **Model download or memory failure**: check network access and available
+  RAM/VRAM. Use `--limit` for an evaluation pilot before a full run.
+- **Evaluation report is blocked**: inspect the JSON report's status and
+  reason. English calibration must pass before strategy results are reported;
+  paid runs can also stop at the budget cap.
